@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.dao.InternMapper" >
+    <resultMap id="baseResultMap" type="com.example.model.Intern" >
+        <id column="INTERN_ID" property="id" jdbcType="CHAR" />
+        <result column="INTERN_NAME" property="name" jdbcType="NVARCHAR" />
+        <result column="INTERN_BIRTHDAY" property="birthday" jdbcType="VARCHAR" />
+        <result column="INTERN_IN_COMPANY" property="getInCompanyDay" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="findById" parameterType="com.example.model.Intern" resultMap="baseResultMap">
+        SELECT INTERN_ID, INTERN_NAME
+               , TO_CHAR(INTERN_BIRTHDAY, 'yyyy/mm/dd') AS INTERN_BIRTHDAY
+               , TO_CHAR(INTERN_IN_COMPANY, 'yyyy/mm/dd') AS INTERN_IN_COMPANY 
+        FROM INTERN 
+        WHERE INTERN_ID = #{dto.id}
+    </select>
+    
+    <update id="update" parameterType="com.example.model.Intern">
+        UPDATE INTERN
+        SET INTERN_NAME = #{dto.name}
+            , INTERN_BIRTHDAY = TO_DATE(#{dto.birthday}, 'yyyy/mm/dd')
+            , INTERN_IN_COMPANY =TO_DATE(#{dto.getInCompanyDay}, 'yyyy/mm/dd')
+        WHERE INTERN_ID = #{dto.id}
+    </update>
+</mapper>
